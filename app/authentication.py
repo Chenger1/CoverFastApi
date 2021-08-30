@@ -54,3 +54,10 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
                                                          'password': form_data.password})
     request.session.update({'user': user.dict()})
     return RedirectResponse('/admin/', status_code=303)
+
+
+@router.get('/logout', response_class=HTMLResponse)
+async def logout(request: Request):
+    request.session.pop('user')
+    return RedirectResponse('/', status_code=303)
+
