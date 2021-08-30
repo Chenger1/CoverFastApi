@@ -40,3 +40,8 @@ async def update_main_page(conn: AsyncIOMotorClient, data: dict) -> bool:
     if updated_item:
         return True
     return False
+
+
+async def get_main_page(conn: AsyncIOMotorClient) -> dict:
+    item = await conn[DB_NAME]['main_page'].find_one()
+    return item
