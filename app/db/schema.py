@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr
 
 
 class MainPageSchema(BaseModel):
+    page_name: str  #: Text above menu
     title: str
     text: str
 
