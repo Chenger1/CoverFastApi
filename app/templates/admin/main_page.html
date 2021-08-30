@@ -1,0 +1,45 @@
+{% extends 'admin/admin_index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+<div style="margin-top: 20px;">
+    <div class="mb-3">
+        <label for="inputPageName">Page name</label>
+        <input type="text" class="form-control" id="inputPageName" placeholder="For example: 'My company'"
+        name="page_name" required>
+    </div>
+    <div class="mb-3">
+        <label for="titleInput" class="form-label">Page title</label>
+        <input class="form-control" id="titleInput" placeholder="Title of main page" name="title" required>
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Main text</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
+    </div>
+    <button type="button" class="btn btn-secondary" id="save">Save</button>
+</div>
+
+<script src="{{ url_for('static', path='/js/requests.js') }}"></script>
+<script>
+    let btn = document.getElementById('save');
+    btn.addEventListener('click', function(){
+        let page_name = document.getElementsByName('page_name')[0]
+        let title = document.getElementsByName('title')[0]
+        let text = document.getElementsByName('text')[0]
+        data = {
+            'page_name': page_name.value,
+            'title': title.value,
+            'text': text.value
+        }
+
+        send_request(JSON.stringify(data), '/admin/')
+    })
+</script>
+{% endblock %}
+</body>
+</html>
