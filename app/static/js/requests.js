@@ -1,7 +1,7 @@
-function send_request(data, url){
+function send_request(data, url, method='POST'){
     let xhr = new XMLHttpRequest();
 
-    xhr.open('POST', url);
+    xhr.open(method, url);
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');  // set header to JSON instead of Form Data
     xhr.send([data]);
 

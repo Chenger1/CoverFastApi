@@ -1,0 +1,49 @@
+{% extends 'admin/admin_index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{username}}</title>
+</head>
+<body>
+{% block content %}
+<div style="margin-top: 20px;">
+    <h1>User: #<span id="user_id">{{ _id }}</span></h1>
+    <div class="mb-3">
+        <label for="inputEmail">Email</label>
+        <input type="email" class="form-control" id="inputEmail" placeholder="my@email.com"
+        name="email" value="{{ email }}">
+    </div>
+    <div class="mb-3">
+        <label for="usernameInput" class="form-label">Username</label>
+        <input class="form-control" id="usernameInput" placeholder="Username" name="username" value="{{ username }}">
+    </div>
+    <button type="button" class="btn btn-secondary" id="save">Save</button>
+</div>
+
+<script src="{{ url_for('static', path='/js/requests.js') }}"></script>
+<script>
+    let btn = document.getElementById('save');
+    btn.addEventListener('click', function(){
+        this.blur();
+        let email = document.getElementsByName('email')[0];
+        let username = document.getElementsByName('username')[0];
+        let user_id = document.getElementById('user_id').textContent;
+
+        if(email.value != '' && username.value != ''){
+            let data = {
+                'username': username.value,
+                'email': email.value,
+            }
+            let url = `/admin/users/${user_id}`  // Do not use '/admin/users' + user_id. It wont work
+            console.log(url);
+            send_request(JSON.stringify(data), url, 'PATCH');
+
+        }else{
+            alert('Some fields are empty')
+        }
+    })
+</script>
+{% endblock %}
+</body>
+</html>

@@ -53,7 +53,7 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
                                                          'username': form_data.username,
                                                          'password': form_data.password})
     request.session.update({'user': user.dict()})
-    return RedirectResponse('/admin/', status_code=303)
+    return RedirectResponse('/admin_css/', status_code=303)
 
 
 @router.get('/logout', response_class=HTMLResponse)

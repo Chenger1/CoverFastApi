@@ -30,6 +30,15 @@ async def get_user_by_email(conn: AsyncIOMotorClient, email: str) -> Optional[Us
     return UserSchema(**obj) if obj else None
 
 
+async def update_item(conn: AsyncIOMotorClient, obj_id: str, collection: str,
+                      data: dict) -> bool:
+    updated_item = await conn[DB_NAME][collection].update_one({'_id': ObjectId(obj_id)},
+                                                              {'$set': data})
+    if updated_item:
+        return True
+    return False
+
+
 async def update_main_page(conn: AsyncIOMotorClient, data: dict) -> bool:
     item = await conn[DB_NAME]['main_page'].find_one()
     if item:

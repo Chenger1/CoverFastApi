@@ -20,13 +20,22 @@
         </thead>
         <tbody>
         {% for user in instances %}
-            <tr>
-                <th scope="row">{{ user._id }}</th>
-                <th>{{ user.email }}</th>
-                <th>{{ user.username }}</th>
-                <th>{{ user.is_admin }}</th>
-            </tr>
-        {% empty %}
+            {% if user.username == request.session.user.username %}
+                <tr>
+                    <th scope="row"><a href="{{ url_for('user_detail', id=user._id) }}" class="link-dark">{{ user._id }}</a></th>
+                    <th><a href="{{ url_for('user_detail', id=user._id) }}" class="link-dark">{{ user.email }}</a></th>
+                    <th><a href="{{ url_for('user_detail', id=user._id) }}" class="link-dark">{{ user.username }}</a></th>
+                    <th><a href="{{ url_for('user_detail', id=user._id) }}" class="link-dark">{{ user.is_admin }}</a></th>
+                </tr>
+            {% else %}
+                <tr>
+                    <th scope="row">{{ user._id }}</th>
+                    <th>{{ user.email }}</th>
+                    <th>{{ user.username }}</th>
+                    <th>{{ user.is_admin }}</th>
+                </tr>
+            {% endif %}
+        {% else %}
             <tr>
                 <th>No any users yet</th>
             </tr>

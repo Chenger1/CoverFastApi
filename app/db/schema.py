@@ -16,8 +16,10 @@ class FeatureSchema(BaseModel):
 class UserSchema(BaseModel):
     username: str
     email: EmailStr
+
+
+class CreateUserSchema(UserSchema):
     password: str
-    is_admin: bool = True  #: By default there are no user`s except of admins
 
 
 class ContactsSchema(BaseModel):
