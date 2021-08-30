@@ -11,15 +11,15 @@
     <div class="mb-3">
         <label for="inputPageName">Page name</label>
         <input type="text" class="form-control" id="inputPageName" placeholder="For example: 'My company'"
-        name="page_name" required>
+        name="page_name" value="{{ page_name }}">
     </div>
     <div class="mb-3">
         <label for="titleInput" class="form-label">Page title</label>
-        <input class="form-control" id="titleInput" placeholder="Title of main page" name="title" required>
+        <input class="form-control" id="titleInput" placeholder="Title of main page" name="title" value="{{ title }}">
     </div>
     <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Main text</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text">{{ text }}</textarea>
     </div>
     <button type="button" class="btn btn-secondary" id="save">Save</button>
 </div>

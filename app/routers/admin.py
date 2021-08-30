@@ -6,7 +6,7 @@ from app.template_file import templates
 from dependencies import check_is_authenticated
 from db.database import AsyncIOMotorClient, get_database
 from db.schema import MainPageSchema
-from db.crud import update_main_page
+from db.crud import update_main_page, get_main_page
 
 
 router = APIRouter(
@@ -17,8 +17,12 @@ router = APIRouter(
 
 
 @router.get('/', response_class=HTMLResponse)
-async def admin_page(request: Request):
-    return templates.TemplateResponse('/admin/main_page.html', {'request': request})
+async def admin_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    instance = await get_main_page(conn)
+    return templates.TemplateResponse('/admin/main_page.html', {'request': request,
+                                                                'page_name': instance.get('page_name'),
+                                                                'title': instance.get('title'),
+                                                                'text': instance.get('text')})
 
 
 @router.post('/')
