@@ -10,6 +10,7 @@ from config import SECRET_KEY
 import uvicorn
 
 from db.database import connect_to_db, close_connection
+from utils.exceptions import unauthorized_exception_handler, UnauthorizedException
 
 
 app = FastAPI()
@@ -24,6 +25,7 @@ session = SessionMiddleware(app, SECRET_KEY)
 
 app.add_event_handler('startup', connect_to_db)
 app.add_event_handler('shutdown', close_connection)
+app.add_exception_handler(UnauthorizedException, unauthorized_exception_handler)
 
 
 if __name__ == '__main__':
