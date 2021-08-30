@@ -31,13 +31,20 @@
         let page_name = document.getElementsByName('page_name')[0]
         let title = document.getElementsByName('title')[0]
         let text = document.getElementsByName('text')[0]
-        data = {
-            'page_name': page_name.value,
-            'title': title.value,
-            'text': text.value
-        }
+        
+        if (page_name.value != '' && title.value != '' && text.value != ''){
+            data = {
+                'page_name': page_name.value,
+                'title': title.value,
+                'text': text.value
+            }
 
-        send_request(JSON.stringify(data), '/admin/')
+            send_request(JSON.stringify(data), '/admin/')
+        }else{
+            alert('Some fields are empty');
+        }
+        this.blur();
+
     })
 </script>
 {% endblock %}
