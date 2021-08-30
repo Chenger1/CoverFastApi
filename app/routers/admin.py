@@ -6,7 +6,7 @@ from app.template_file import templates
 from dependencies import check_is_authenticated
 from db.database import AsyncIOMotorClient, get_database
 from db.schema import MainPageSchema
-from db.crud import update_main_page, get_main_page
+from db.crud import update_main_page, get_main_page, retrieve_from_collections
 
 
 router = APIRouter(
@@ -30,3 +30,10 @@ async def main_page(request: Request, data: MainPageSchema,
                     conn: AsyncIOMotorClient = Depends(get_database)):
     result = await update_main_page(conn, data.dict())
     return {'status': 200 if result else 404}
+
+
+@router.get('/users')
+async def users_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    instances = await retrieve_from_collections(conn, 'user')
+    return templates.TemplateResponse('/admin/users_page.html', {'request': request,
+                                                                 'instances': instances})

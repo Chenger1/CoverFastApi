@@ -1,0 +1,39 @@
+{% extends 'admin/admin_index.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+{% block content %}
+<div style="margin-top: 20px;">
+    <h1 class="text-center">Users list</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">email</th>
+            <th scope="col">username</th>
+            <th scope="col">is_admin</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in instances %}
+            <tr>
+                <th scope="row">{{ user._id }}</th>
+                <th>{{ user.email }}</th>
+                <th>{{ user.username }}</th>
+                <th>{{ user.is_admin }}</th>
+            </tr>
+        {% empty %}
+            <tr>
+                <th>No any users yet</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+</body>
+</html>

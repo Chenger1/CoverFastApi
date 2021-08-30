@@ -57,13 +57,13 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ url_for('admin_page') }}">
+            <a class="nav-link {% if request.url.path == '/admin/' %}active{% endif %}" aria-current="page" href="{{ url_for('admin_page') }}">
               <span data-feather="home"></span>
               Main page
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link {% if '/admin/users' in request.url.path %}active{% endif %} " href="{{ url_for('users_page') }}">
               <span data-feather="file"></span>
               Users
             </a>
