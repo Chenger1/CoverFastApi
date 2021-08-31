@@ -24,7 +24,7 @@
             <th scope="row"><a href="{{ url_for('feature_detail', id=feature._id) }}" class="link-dark">{{ feature._id }}</a>
             </th>
             <th><a href="{{ url_for('feature_detail', id=feature._id) }}" class="link-dark">{{ feature.title }}</a></th>
-            <th><a href="{{ url_for('feature_detail', id=feature._id) }}" class="link-dark">{{ feature.tags }}</a></th>
+            <th><a href="{{ url_for('feature_detail', id=feature._id) }}" class="link-dark">{{ feature.tags|join(', ') }}</a></th>
             <th><a href="{{ url_for('delete_feature', id=feature._id) }}" class="link-blue">Delete feature</a></th>
         </tr>
         {% else %}
