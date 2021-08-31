@@ -34,6 +34,10 @@
 
     tag_btn.addEventListener('click', function(){
         let input_tag = document.getElementById('inputTag'); 
+        if(input_tag.value.includes(',')){
+            alert('Wrong tag format');
+            return
+        }
         tags.push(input_tag.value);
         input_tag.value = '';
         span_tags.textContent = tags.join(', ');
