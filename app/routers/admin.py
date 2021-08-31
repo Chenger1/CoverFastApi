@@ -42,9 +42,9 @@ async def users_page(request: Request, conn: AsyncIOMotorClient = Depends(get_da
 @router.get('/users/{id}')
 async def user_detail(id: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
     instance = await crud.retrieve_data(conn, id, 'user')
-    if not instance.get('username') == request.session.get('user')['username']:
+    if not str(instance.get('_id')) == request.session.get('user')['id']:
         raise HTTPException(status_code=404,
-                            detail='You don`t have access to this uer')
+                            detail='You don`t have access to this user')
     return templates.TemplateResponse('/admin/user_detail_page.html', {'request': request,
                                                                        '_id': str(instance.get('_id')),
                                                                        'email': instance.get('email'),
@@ -54,5 +54,12 @@ async def user_detail(id: str, request: Request, conn: AsyncIOMotorClient = Depe
 @router.patch('/users/{id}')
 async def change_user_info(id: str, request: Request, data: UserSchema,
                            conn: AsyncIOMotorClient = Depends(get_database)):
+    current_user = request.session.get('user')
     result = await crud.update_item(conn, id, 'user', data.dict())
+    if result:
+        #  Update session
+        current_user['username'] = data.username
+        current_user['email'] = data.email
+        request.session.pop('user')
+        request.session['user'] = current_user
     return {'status_code': 200 if result else 404}

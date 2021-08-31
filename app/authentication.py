@@ -52,8 +52,11 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
                                                          'error': 'Wrong username or password',
                                                          'username': form_data.username,
                                                          'password': form_data.password})
-    request.session.update({'user': user.dict()})
-    return RedirectResponse('/admin_css/', status_code=303)
+    request.session.update(
+        {'user': {'id': user.user_id,
+                  'is_admin': user.is_admin}}
+    )
+    return RedirectResponse('/admin/', status_code=303)
 
 
 @router.get('/logout', response_class=HTMLResponse)

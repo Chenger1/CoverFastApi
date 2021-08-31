@@ -20,7 +20,7 @@
         </thead>
         <tbody>
         {% for user in instances %}
-            {% if user.username == request.session.user.username %}
+            {% if user._id.__str__() == request.session.user.id %}
                 <tr>
                     <th scope="row"><a href="{{ url_for('user_detail', id=user._id) }}" class="link-dark">{{ user._id }}</a></th>
                     <th><a href="{{ url_for('user_detail', id=user._id) }}" class="link-dark">{{ user.email }}</a></th>

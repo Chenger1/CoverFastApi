@@ -2,7 +2,7 @@ from bson import ObjectId
 
 from typing import Optional
 
-from .schema import UserSchema
+from .schema import LogInUser
 from .database import AsyncIOMotorClient
 
 from config import DB_NAME
@@ -25,9 +25,14 @@ async def retrieve_data(conn: AsyncIOMotorClient, id: str, collection: str) -> d
     return obj
 
 
-async def get_user_by_email(conn: AsyncIOMotorClient, email: str) -> Optional[UserSchema]:
+async def get_user_by_email(conn: AsyncIOMotorClient, email: str) -> Optional[LogInUser]:
     obj = await conn[DB_NAME]['user'].find_one({'email': email})
-    return UserSchema(**obj) if obj else None
+    schema = None
+    if obj:
+        schema = LogInUser(user_id=str(obj.get('_id')),
+                           is_admin=obj.get('is_admin'),
+                           password=obj.get('password'))
+    return schema
 
 
 async def update_item(conn: AsyncIOMotorClient, obj_id: str, collection: str,

@@ -22,6 +22,12 @@ class CreateUserSchema(UserSchema):
     password: str
 
 
+class LogInUser(BaseModel):
+    user_id: str
+    is_admin: bool
+    password: str
+
+
 class ContactsSchema(BaseModel):
     email: EmailStr
     phone_number: str

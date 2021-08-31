@@ -38,7 +38,7 @@
             let url = `/admin/users/${user_id}`  // Do not use '/admin/users' + user_id. It wont work
             console.log(url);
             send_request(JSON.stringify(data), url, 'PATCH');
-
+            window.location.href = '/admin/users'
         }else{
             alert('Some fields are empty')
         }
