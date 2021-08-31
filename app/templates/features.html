@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Features</title>
+</head>
+<body>
+{% block content %}
+<div class="row">
+    {% for inst in instances %}
+    <div class="col">
+        <h1>{{ inst.title }}</h1>
+        <h3>{{ inst.text }}</h3>
+        <p>{{ inst.tags|join(', ') }}</p>
+    </div>
+    {% else %}
+    <div class="col">
+        <h1>There are not any features yes.</h1>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+</body>
+</html>

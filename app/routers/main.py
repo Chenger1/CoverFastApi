@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from app.template_file import templates
 
 from db.database import AsyncIOMotorClient, get_database
-from db.crud import get_singleton
+from db.crud import get_singleton, retrieve_from_collections
 
 router = APIRouter()
 
@@ -31,3 +31,11 @@ async def contacts_page(request: Request, conn: AsyncIOMotorClient = Depends(get
              }
         )
     return templates.TemplateResponse('contact.html', context)
+
+
+@router.get('/features', response_class=HTMLResponse)
+async def features_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    instances = await retrieve_from_collections(conn, 'feature')
+    return templates.TemplateResponse('/features.html', {'request': request,
+                                                         'instances': instances,
+                                                         'page_name': 'Features'})

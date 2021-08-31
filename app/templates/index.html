@@ -43,7 +43,7 @@
       <h3 class="float-md-start mb-0">{{ page_name }}</h3>
       <nav class="nav nav-masthead justify-content-center float-md-end">
         <a class="nav-link {% if request.url.path == '/' %}active{% endif %}" aria-current="page" href="{{ url_for('main_page') }}">Home</a>
-        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link {% if request.url.path == '/features' %}active{% endif %}" href="{{ url_for('features_page') }}">Features</a>
         <a class="nav-link {% if request.url.path == '/contacts' %}active{% endif %} " href="{{ url_for('contacts_page') }}">Contact</a>
       </nav>
     </div>
