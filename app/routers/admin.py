@@ -5,7 +5,7 @@ from app.template_file import templates
 
 from dependencies import check_is_authenticated
 from db.database import AsyncIOMotorClient, get_database
-from db.schema import MainPageSchema, UserSchema, CreateUserSchema
+from db.schema import MainPageSchema, UserSchema, CreateUserSchema, ContactsSchema
 from db import crud
 
 
@@ -18,7 +18,7 @@ router = APIRouter(
 
 @router.get('/', response_class=HTMLResponse)
 async def admin_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
-    instance = await crud.get_main_page(conn)
+    instance = await crud.get_singleton(conn, 'main_page')
     return templates.TemplateResponse('/admin/main_page.html', {'request': request,
                                                                 'page_name': instance.get('page_name'),
                                                                 'title': instance.get('title'),
@@ -28,7 +28,7 @@ async def admin_page(request: Request, conn: AsyncIOMotorClient = Depends(get_da
 @router.post('/')
 async def main_page(request: Request, data: MainPageSchema,
                     conn: AsyncIOMotorClient = Depends(get_database)):
-    result = await crud.update_main_page(conn, data.dict())
+    result = await crud.update_singleton(conn, data.dict(), 'main_page')
     return {'status': 200 if result else 404}
 
 
@@ -83,3 +83,24 @@ async def delete_user(id: str, request: Request, conn: AsyncIOMotorClient = Depe
                             detail='You don`t have access to this user')
     await crud.delete_item(conn, id, 'user')
     return RedirectResponse('/admin/users', status_code=303)
+
+
+@router.get('/contacts', response_class=HTMLResponse)
+async def edit_contacts_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    data = await crud.get_singleton(conn, 'contacts')
+    context = {'request': request}
+    if data:
+        context.update(
+            {'phone_number': data.get('phone_number'),
+             'email': data.get('email'),
+             'address': data.get('address')
+             }
+        )
+    return templates.TemplateResponse('admin/edit_contacts.html', context)
+
+
+@router.post('/contacts')
+async def edit_contacts(request: Request, data: ContactsSchema,
+                        conn: AsyncIOMotorClient = Depends(get_database)):
+    result = await crud.update_singleton(conn, data.dict(), 'contacts')
+    return {'status_code': 200 if result else 404}

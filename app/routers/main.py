@@ -22,12 +22,12 @@ async def main_page(request: Request, conn: AsyncIOMotorClient = Depends(get_dat
 @router.get('/contacts', response_class=HTMLResponse)
 async def contacts_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
     data = await get_singleton(conn, 'contacts')
-    context = {'request': request}
+    context = {'request': request, 'page_name': 'Contacts'}
     if data:
         context.update(
-            {'phone_number': data.get('phone_number'),
-             'email': data.get('email'),
-             'address': data.get('address')
+            {'phone_number': data.get('phone_number', 'No('),
+             'email': data.get('email', 'No('),
+             'address': data.get('address', 'No(')
              }
         )
     return templates.TemplateResponse('contact.html', context)

@@ -49,13 +49,13 @@ async def update_item(conn: AsyncIOMotorClient, obj_id: str, collection: str,
     return False
 
 
-async def update_main_page(conn: AsyncIOMotorClient, data: dict) -> bool:
-    item = await conn[DB_NAME]['main_page'].find_one()
+async def update_singleton(conn: AsyncIOMotorClient, data: dict, collection: str) -> bool:
+    item = await conn[DB_NAME][collection].find_one()
     if item:
-        updated_item = await conn[DB_NAME]['main_page'].update_one({'_id': item.get('_id')},
+        updated_item = await conn[DB_NAME][collection].update_one({'_id': item.get('_id')},
                                                                    {'$set': data})
     else:
-        updated_item = await create_new_item(conn, 'main_page', data)
+        updated_item = await create_new_item(conn, collection, data)
     if updated_item:
         return True
     return False

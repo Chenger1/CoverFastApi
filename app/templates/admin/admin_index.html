@@ -71,7 +71,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link {% if '/admin/contacts' in request.url.path %}active{% endif %}" href="{{ url_for('edit_contacts_page') }}">
               Contacts
             </a>
           </li>
