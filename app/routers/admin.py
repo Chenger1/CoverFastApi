@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Depends, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.template_file import templates
 
@@ -63,3 +63,12 @@ async def change_user_info(id: str, request: Request, data: UserSchema,
         request.session.pop('user')
         request.session['user'] = current_user
     return {'status_code': 200 if result else 404}
+
+
+@router.get('/users/{id}/delete')
+async def delete_user(id: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    if id != request.session.get('user_id')['user_id']:
+        raise HTTPException(status_code=404,
+                            detail='You don`t have access to this user')
+    await crud.delete_item(conn, id, 'user')
+    return RedirectResponse('/admin/users', status_code=303)

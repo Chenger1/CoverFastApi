@@ -25,6 +25,11 @@ async def retrieve_data(conn: AsyncIOMotorClient, id: str, collection: str) -> d
     return obj
 
 
+async def delete_item(conn: AsyncIOMotorClient, id: str, collection: str) -> bool:
+    result = await conn[DB_NAME][collection].delete_one({'_id': ObjectId(id)})
+    return result
+
+
 async def get_user_by_email(conn: AsyncIOMotorClient, email: str) -> Optional[LogInUser]:
     obj = await conn[DB_NAME]['user'].find_one({'email': email})
     schema = None
