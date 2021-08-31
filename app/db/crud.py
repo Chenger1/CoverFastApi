@@ -61,6 +61,6 @@ async def update_main_page(conn: AsyncIOMotorClient, data: dict) -> bool:
     return False
 
 
-async def get_main_page(conn: AsyncIOMotorClient) -> dict:
-    item = await conn[DB_NAME]['main_page'].find_one()
+async def get_singleton(conn: AsyncIOMotorClient, collection: str) -> dict:
+    item = await conn[DB_NAME][collection].find_one()
     return item
