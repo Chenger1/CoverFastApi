@@ -106,6 +106,18 @@ async def edit_contacts(request: Request, data: ContactsSchema,
     return {'status_code': 200 if result else 404}
 
 
+@router.get('/features/add_feature', response_class=HTMLResponse)
+async def add_feature_page(request: Request):
+    return templates.TemplateResponse('/admin/add_feature_page.html', {'request': request})
+
+
+@router.post('/features/add_feature')
+async def add_feature(request: Request, data: FeatureSchema,
+                      conn: AsyncIOMotorClient = Depends(get_database)):
+    result = await crud.create_new_item(conn, 'feature', data.dict())
+    return {'status_code': 200 if result else 404}
+
+
 @router.get('/features', response_class=HTMLResponse)
 async def get_features_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
     instances = await crud.retrieve_from_collections(conn, 'feature')
@@ -124,10 +136,3 @@ async def feature_detail(id: str, request: Request, conn: AsyncIOMotorClient = D
 async def delete_feature(id: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
     await crud.delete_item(conn, id, 'feature')
     return RedirectResponse('/admin/features', status_code=303)
-
-
-@router.get('/features/add_feature', response_class=HTMLResponse)
-async def add_feature_page(request: Request, data: FeatureSchema,
-                           conn: AsyncIOMotorClient = Depends(get_database)):
-    result = await crud.create_new_item(conn, 'feature', data.dict())
-    return {'status_code': 200 if result else 404}

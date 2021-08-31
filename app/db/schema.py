@@ -12,7 +12,7 @@ class MainPageSchema(BaseModel):
 class FeatureSchema(BaseModel):
     title: str
     text: str
-    tags: list
+    tags: Optional[list]
 
 
 class UserSchema(BaseModel):
