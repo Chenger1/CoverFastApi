@@ -128,8 +128,19 @@ async def get_features_page(request: Request, conn: AsyncIOMotorClient = Depends
 @router.get('/features/{id}', response_class=HTMLResponse)
 async def feature_detail(id: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
     instance = await crud.retrieve_data(conn, id, 'feature')
-    return templates.TemplateResponse('/admin/feature_detail_page.html', {'request': request,
-                                                                          'instance': instance})
+    tags = ', '.join(instance.get('tags', ()))
+    return templates.TemplateResponse('/admin/add_feature_page.html', {'request': request,
+                                                                       'title': instance.get('title'),
+                                                                       'text': instance.get('text'),
+                                                                       'tags': tags,
+                                                                       'object_id': instance.get('_id')})
+
+
+@router.patch('/features/{id}')
+async def feature_detail(id: str, request: Request, data: FeatureSchema,
+                         conn: AsyncIOMotorClient = Depends(get_database)):
+    instance = await crud.update_item(conn, id, 'feature', data.dict())
+    return {'status_code': 200 if instance else 404}
 
 
 @router.get('/features/{id}/delete')

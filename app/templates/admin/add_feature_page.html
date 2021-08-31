@@ -8,17 +8,18 @@
 <body>
 {% block content %}
 <div style="margin-top: 20px;">
+    <input type="hidden" id="object_id" value="{{ object_id }}">
     <div class="mb-3">
         <label for="inputTitle">Title</label>
         <input type="text" class="form-control" id="inputTitle" placeholder="New feature"
-        name="title">
+        name="title" value="{{ title }}">
     </div>
     <div class="mb-3">
         <label for="inputText" class="form-label">Text</label>
-        <textarea class="form-control" id="inputText" rows="3" name="text"></textarea>
+        <textarea class="form-control" id="inputText" rows="3" name="text">{{ text }}</textarea>
     </div>
     <div class="mb-3">
-        <p>Tags: <span id="tags"></span></p>
+        <p>Tags: <strong><span id="tags">{{ tags }}</span></strong></p>
         <label for="inputTag" class="form-label">Tag</label>
         <input type="text" id="inputTag" placeholder="MyTag" class="form-control">
         <button class="btn btn-secondary" id="add_tag" style="margin-top:10px;">Add tag</button>
@@ -31,6 +32,20 @@
     let tags = [];
     let tag_btn = document.getElementById('add_tag');
     let span_tags = document.getElementById('tags');
+    let save_url = '/admin/features/add_feature' 
+    let method = 'POST'
+
+    window.addEventListener('DOMContentLoaded', function(event){
+        let value = span_tags.textContent;
+        if(value){
+            tags = value.split(',');   
+            span_tags.textContent = tags.join(',');
+
+            let obj_id = document.getElementById('object_id');
+            save_url = `/admin/features/${obj_id.value}`;
+            method = 'PATCH';
+        }    
+    })
 
     tag_btn.addEventListener('click', function(){
         let input_tag = document.getElementById('inputTag'); 
@@ -58,7 +73,7 @@
                 'tags': tags
             }
 
-            send_request(JSON.stringify(data), '/admin/features/add_feature')
+            send_request(JSON.stringify(data), save_url, method)
             window.location.href = '/admin/features'
         }else{
             alert('Some fields are empty');
