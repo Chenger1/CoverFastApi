@@ -61,12 +61,12 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if '/admin/users' in request.url.path %}active{% endif %} " href="{{ url_for('users_page') }}">
+            <a class="nav-link {% if '/admin/users' in request.url.path %}active{% endif %}" href="{{ url_for('users_page') }}">
               Users
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link {% if '/admin/features' in request.url.path %}active{% endif %}" href="{{ url_for('get_features_page') }}">
               Features
             </a>
           </li>

@@ -5,7 +5,7 @@ from app.template_file import templates
 
 from dependencies import check_is_authenticated
 from db.database import AsyncIOMotorClient, get_database
-from db.schema import MainPageSchema, UserSchema, CreateUserSchema, ContactsSchema
+from db.schema import MainPageSchema, UserSchema, CreateUserSchema, ContactsSchema, FeatureSchema
 from db import crud
 
 
@@ -103,4 +103,31 @@ async def edit_contacts_page(request: Request, conn: AsyncIOMotorClient = Depend
 async def edit_contacts(request: Request, data: ContactsSchema,
                         conn: AsyncIOMotorClient = Depends(get_database)):
     result = await crud.update_singleton(conn, data.dict(), 'contacts')
+    return {'status_code': 200 if result else 404}
+
+
+@router.get('/features', response_class=HTMLResponse)
+async def get_features_page(request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    instances = await crud.retrieve_from_collections(conn, 'feature')
+    return templates.TemplateResponse('admin/features_page.html', {'request': request,
+                                                                   'instances': instances})
+
+
+@router.get('/features/{id}', response_class=HTMLResponse)
+async def feature_detail(id: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    instance = await crud.retrieve_data(conn, id, 'feature')
+    return templates.TemplateResponse('/admin/feature_detail_page.html', {'request': request,
+                                                                          'instance': instance})
+
+
+@router.get('/features/{id}/delete')
+async def delete_feature(id: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    await crud.delete_item(conn, id, 'feature')
+    return RedirectResponse('/admin/features', status_code=303)
+
+
+@router.get('/features/add_feature', response_class=HTMLResponse)
+async def add_feature_page(request: Request, data: FeatureSchema,
+                           conn: AsyncIOMotorClient = Depends(get_database)):
+    result = await crud.create_new_item(conn, 'feature', data.dict())
     return {'status_code': 200 if result else 404}
