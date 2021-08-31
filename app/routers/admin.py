@@ -5,7 +5,7 @@ from app.template_file import templates
 
 from dependencies import check_is_authenticated
 from db.database import AsyncIOMotorClient, get_database
-from db.schema import MainPageSchema, UserSchema
+from db.schema import MainPageSchema, UserSchema, CreateUserSchema
 from db import crud
 
 
@@ -37,6 +37,17 @@ async def users_page(request: Request, conn: AsyncIOMotorClient = Depends(get_da
     instances = await crud.retrieve_from_collections(conn, 'user')
     return templates.TemplateResponse('/admin/users_page.html', {'request': request,
                                                                  'instances': instances})
+
+
+@router.get('/users/add_user', response_class=HTMLResponse)
+async def add_user_page(request: Request):
+    return templates.TemplateResponse('admin/add_user.html', {'request': request})
+
+
+@router.post('/users/add_user')
+async def add_user_post(request: Request, data: CreateUserSchema, conn: AsyncIOMotorClient = Depends(get_database)):
+    result = await crud.create_new_item(conn, 'user', data.dict())
+    return {'status_code': 200 if result else 404}
 
 
 @router.get('/users/{id}')

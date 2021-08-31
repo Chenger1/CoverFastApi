@@ -1,5 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
+from typing import Optional
+
 
 class MainPageSchema(BaseModel):
     page_name: str  #: Text above menu
@@ -20,6 +22,7 @@ class UserSchema(BaseModel):
 
 class CreateUserSchema(UserSchema):
     password: str
+    is_admin: Optional[bool] = True
 
 
 class LogInUser(BaseModel):
