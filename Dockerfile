@@ -1,7 +1,6 @@
 FROM python:3.9.4-buster
 
 ENV PATH = "/opt/venv/bin:$PATH"
-WORKDIR "/app"
 
 COPY . .
 

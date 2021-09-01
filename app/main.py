@@ -19,7 +19,11 @@ app.include_router(auth_router)
 app.include_router(main.router)
 app.include_router(admin.router)
 
-app.mount('/static', StaticFiles(directory='static'), name='static')
+try:
+    app.mount('/static', StaticFiles(directory='static'), name='static')
+except RuntimeError:
+    app.mount('/static', StaticFiles(directory='app/static'), name='static')  # For Docker
+     
 app.add_middleware(SessionMiddleware, **{'secret_key': SECRET_KEY})
 
 session = SessionMiddleware(app, SECRET_KEY)
