@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 80
+    env_file:
+      - app/.env
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+  db:
+    image: mongo
