@@ -42,7 +42,9 @@
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Search. Press 'Enter' " aria-label="Search" id="search_input">
+  <button class="btn btn-dark" id='search'>Search</button>
+  <a href="" style="display: none;" id="search_link"></a>
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
       <a class="nav-link px-3" href="{{ url_for('logout') }}">Sign out</a>
@@ -66,7 +68,12 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if '/admin/features' in request.url.path %}active{% endif %}" href="{{ url_for('get_features_page') }}">
+            <a class="nav-link
+            {% if '/admin/features' in request.url.path %}
+            active
+            {% elif '/admin/search' in request.url.path %}
+            active
+            {% endif %}" href="{{ url_for('get_features_page') }}">
               Features
             </a>
           </li>
@@ -88,5 +95,16 @@
   </div>
 </div>
     <script src="{{ url_for('static', path='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+      let search = document.getElementById('search');
+      let search_input = document.getElementById('search_input');
+      let search_link = document.getElementById('search_link');
+
+      search.addEventListener('click', function(event){
+          link = `/admin/search/${search_input.value}`;
+          search_link.setAttribute('href', link);
+          search_link.click();
+      })
+    </script>
   </body>
 </html>

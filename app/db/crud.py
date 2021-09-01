@@ -40,6 +40,17 @@ async def get_user_by_email(conn: AsyncIOMotorClient, email: str) -> Optional[Lo
     return schema
 
 
+async def get_features(conn: AsyncIOMotorClient, value: str) -> list[dict]:
+    list_of_objects = []
+    async for feature in conn[DB_NAME]['feature']\
+            .find({'$or': [{'title': {'$regex': f'.*{value}.*', '$options': 'i'}},
+                           {'text': {'$regex': f'.*{value}.*', '$options': 'i'}}]}):
+        #  Search by title OR text
+        list_of_objects.append(feature)
+
+    return list_of_objects
+
+
 async def update_item(conn: AsyncIOMotorClient, obj_id: str, collection: str,
                       data: dict) -> bool:
     updated_item = await conn[DB_NAME][collection].update_one({'_id': ObjectId(obj_id)},

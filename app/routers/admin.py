@@ -147,3 +147,10 @@ async def feature_detail(id: str, request: Request, data: FeatureSchema,
 async def delete_feature(id: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
     await crud.delete_item(conn, id, 'feature')
     return RedirectResponse('/admin/features', status_code=303)
+
+
+@router.get('/search/{value}', response_class=HTMLResponse)
+async def search(value: str, request: Request, conn: AsyncIOMotorClient = Depends(get_database)):
+    instances = await crud.get_features(conn, value)
+    return templates.TemplateResponse('admin/features_page.html', {'request': request,
+                                                                   'instances': instances})
