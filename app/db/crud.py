@@ -74,4 +74,4 @@ async def update_singleton(conn: AsyncIOMotorClient, data: dict, collection: str
 
 async def get_singleton(conn: AsyncIOMotorClient, collection: str) -> dict:
     item = await conn[DB_NAME][collection].find_one()
-    return item
+    return item or {}

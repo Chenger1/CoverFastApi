@@ -14,9 +14,9 @@ async def main_page(request: Request, conn: AsyncIOMotorClient = Depends(get_dat
     data = await get_singleton(conn, 'main_page')
     return templates.TemplateResponse('index.html',
                                       {'request': request,
-                                       'page_name': data.get('page_name'),
-                                       'title': data.get('title'),
-                                       'text': data.get('text')})
+                                       'page_name': data.get('page_name', 'Empty name'),
+                                       'title': data.get('title', 'Title can be here'),
+                                       'text': data.get('text', 'Text can be here')})
 
 
 @router.get('/contacts', response_class=HTMLResponse)
