@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from passlib.context import CryptContext
 
-from config import ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD, DB_NAME
+from ..config import ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD, DB_NAME
 
 
 DB_URL = 'mongodb://localhost:27017'

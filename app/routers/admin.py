@@ -3,10 +3,10 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.template_file import templates
 
-from dependencies import check_is_authenticated
-from db.database import AsyncIOMotorClient, get_database
-from db.schema import MainPageSchema, UserSchema, CreateUserSchema, ContactsSchema, FeatureSchema
-from db import crud
+from ..dependencies import check_is_authenticated
+from ..db.database import AsyncIOMotorClient, get_database
+from ..db.schema import MainPageSchema, UserSchema, CreateUserSchema, ContactsSchema, FeatureSchema
+from ..db import crud
 
 
 router = APIRouter(

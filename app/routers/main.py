@@ -3,8 +3,8 @@ from fastapi.responses import HTMLResponse
 
 from app.template_file import templates
 
-from db.database import AsyncIOMotorClient, get_database
-from db.crud import get_singleton, retrieve_from_collections
+from ..db.database import AsyncIOMotorClient, get_database
+from ..db.crud import get_singleton, retrieve_from_collections
 
 router = APIRouter()
 
