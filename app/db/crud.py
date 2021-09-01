@@ -5,7 +5,7 @@ from typing import Optional
 from .schema import LogInUser
 from .database import AsyncIOMotorClient
 
-from ..config import DB_NAME
+from app.config import DB_NAME
 
 
 async def create_new_item(conn: AsyncIOMotorClient, collection: str, data: dict) -> dict:

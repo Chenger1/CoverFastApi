@@ -3,15 +3,15 @@ from fastapi.staticfiles import StaticFiles
 
 from starlette.middleware.sessions import SessionMiddleware
 
-from .routers import main, admin
-from .authentication import router as auth_router
-from .config import SECRET_KEY
+from app.routers import main, admin
+from app.authentication import router as auth_router
+from app.config import SECRET_KEY
 
 import uvicorn
 
-from .db.database import connect_to_db, close_connection
-from .utils.exceptions import (unauthorized_exception_handler, http_exception_handler, UnauthorizedException,
-                              StarletteHTTPException)
+from app.db.database import connect_to_db, close_connection
+from app.utils.exceptions import (unauthorized_exception_handler, http_exception_handler, UnauthorizedException,
+                                  StarletteHTTPException)
 
 
 app = FastAPI()

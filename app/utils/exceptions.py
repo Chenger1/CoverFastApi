@@ -2,7 +2,7 @@ from fastapi import Request
 from fastapi.responses import RedirectResponse
 from fastapi.exceptions import StarletteHTTPException
 
-from ..template_file import templates
+from app.template_file import templates
 
 
 class UnauthorizedException(Exception):

@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from passlib.context import CryptContext
 
-from ..config import ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD, DB_NAME, MONGO_PATH
+from app.config import ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD, DB_NAME, MONGO_PATH
 
 
 DB_URL = MONGO_PATH

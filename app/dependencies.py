@@ -1,6 +1,6 @@
 from fastapi import Request
 
-from .utils.exceptions import UnauthorizedException
+from app.utils.exceptions import UnauthorizedException
 
 
 def check_is_authenticated(request: Request):

@@ -5,8 +5,8 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from passlib.context import CryptContext
 from app.template_file import templates
 
-from .db.crud import get_user_by_email
-from .db.database import AsyncIOMotorClient, get_database
+from app.db.crud import get_user_by_email
+from app.db.database import AsyncIOMotorClient, get_database
 
 router = APIRouter(
     prefix='/login',
