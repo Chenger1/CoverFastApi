@@ -1,4 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
+from passlib.context import CryptContext
+
+from config import ADMIN_EMAIL, ADMIN_NAME, ADMIN_PASSWORD, DB_NAME
 
 
 DB_URL = 'mongodb://localhost:27017'
@@ -15,6 +18,12 @@ class DataBase:
 
 db = DataBase()
 
+pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+
+
+def get_password_hash(plain_password: str) -> str:
+    return pwd_context.hash(plain_password)
+
 
 async def get_database() -> AsyncIOMotorClient:
     return db.client
@@ -22,6 +31,14 @@ async def get_database() -> AsyncIOMotorClient:
 
 async def connect_to_db():
     db.client = AsyncIOMotorClient(DB_URL)
+    user = await db.client[DB_NAME]['user'].find_one({'username': 'admin'})
+    if not user:
+        await db.client[DB_NAME]['user'].insert_one(
+            {'username': ADMIN_NAME,
+             'email': ADMIN_EMAIL,
+             'password': get_password_hash(ADMIN_PASSWORD),
+             'is_admin': True}
+        )
 
 
 async def close_connection():
