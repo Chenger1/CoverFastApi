@@ -22,7 +22,8 @@
         <p>Tags: <strong><span id="tags">{{ tags }}</span></strong></p>
         <label for="inputTag" class="form-label">Tag</label>
         <input type="text" id="inputTag" placeholder="MyTag" class="form-control">
-        <button class="btn btn-secondary" id="add_tag" style="margin-top:10px;">Add tag</button>
+        <button class="btn btn-secondary" id="add_tag" style="margin-top:10px;">Save to tags list</button>
+        <button class="btn btn-primary" id="edit_tags" style="margin-top: 10px;">Edit tags list</button>
     </div>
     <button type="button" class="btn btn-secondary" id="save">Save</button>
 </div>
@@ -31,6 +32,7 @@
 <script>
     let tags = [];
     let tag_btn = document.getElementById('add_tag');
+    let edit_tags_btn = document.getElementById('edit_tags');
     let span_tags = document.getElementById('tags');
     let save_url = '/admin/features/add_feature' 
     let method = 'POST'
@@ -50,14 +52,22 @@
     tag_btn.addEventListener('click', function(){
         let input_tag = document.getElementById('inputTag'); 
         if(input_tag.value.includes(',')){
-            alert('Wrong tag format');
-            return
+            for(val of input_tag.value.split(', ')){
+                tags.push(val);
+            }
+        }else{
+            tags.push(input_tag.value);
         }
-        tags.push(input_tag.value);
         input_tag.value = '';
         span_tags.textContent = tags.join(', ');
          
         this.blur();
+    })
+
+    edit_tags_btn.addEventListener('click', function(){
+        let input_tag = document.getElementById('inputTag');
+        input_tag.value = span_tags.textContent;
+        tags = [];
     })
 
 
